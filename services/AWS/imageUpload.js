@@ -1,5 +1,5 @@
 const moment = require("moment");
-const imgConvert = require("image-convert");
+// const imgConvert = require("image-convert");
 const Jimp = require("jimp");
 var cluster = require("cluster");
 const numCPUs = 4;

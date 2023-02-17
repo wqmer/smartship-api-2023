@@ -29,8 +29,8 @@ class InternationalBridge extends Service {
       shipment.parcel_information.unit_length,
       unit_length_accepted
     );
-    console.log(Number(parseFloat(2 * 0.0625).toFixed(2)));
-
+    
+    // console.log(Number(parseFloat(2 * 0.0625).toFixed(2)));
     // console.log(this.getConvertFactor(shipment.parcel_information.unit_length,unit_length_accepted ))
     let shipments = [];
     let shipClass = {};

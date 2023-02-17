@@ -30,7 +30,7 @@ class FEDEX extends CarrierClass {
     this.agent = agent;
   }
 
-  getSurChargeName = () => {};
+  getSurChargeName = () => { };
 
   // responseSechema = (rateType) => {
   //   let total_charge =
@@ -163,24 +163,24 @@ class FEDEX extends CarrierClass {
         let refernece1 = item.pack_info.reference_1
           ? item.pack_info.reference_1.trim()
             ? {
-                CustomerReferenceType: "P_O_NUMBER",
-                Value: item.pack_info.reference_1,
-              }
+              CustomerReferenceType: "P_O_NUMBER",
+              Value: item.pack_info.reference_1,
+            }
             : undefined
           : undefined;
         let refernece2 = item.pack_info.reference_2
           ? item.pack_info.reference_2.trim()
             ? {
-                CustomerReferenceType: "CUSTOMER_REFERENCE",
-                Value: item.pack_info.reference_2,
-              }
+              CustomerReferenceType: "CUSTOMER_REFERENCE",
+              Value: item.pack_info.reference_2,
+            }
             : undefined
           : undefined;
         let InsuredValue = item.declareValue
           ? {
-              Currency: "USD",
-              Amount: parseFloat(item.declareValue).toFixed(2),
-            }
+            Currency: "USD",
+            Amount: parseFloat(item.declareValue).toFixed(2),
+          }
           : undefined;
         let CustomerReferences = undefined;
         if (refernece1 && !refernece2) {
@@ -205,6 +205,9 @@ class FEDEX extends CarrierClass {
             Height: Math.ceil(parseFloat(height)),
             Units: "IN",
           },
+          // //配置签收
+          // SpecialServicesRequested: { SpecialServiceTypes: 'SIGNATURE_OPTION', SignatureOptionDetail: { OptionType: 'DIRECT' } },
+
           CustomerReferences: {
             CustomerReferenceType: "P_O_NUMBER",
             Value: item.reference_1, //订单号
@@ -213,6 +216,8 @@ class FEDEX extends CarrierClass {
             CustomerReferenceType: "CUSTOMER_REFERENCE",
             Value: item.refernece2, //sku
           },
+
+
 
           CustomerReferences,
         };
@@ -248,22 +253,22 @@ class FEDEX extends CarrierClass {
     //------ Fedex request format ---------------
     let isRes =
       receipant_is_residential ||
-      this.getServiceCode() == "GROUND_HOME_DELIVERY"
+        this.getServiceCode() == "GROUND_HOME_DELIVERY"
         ? true
         : false;
 
-    let SpecialServicesRequested = { SpecialServiceTypes: "FEDEX_ONE_RATE" };
+    // let SpecialServicesRequested = { SpecialServiceTypes: "FEDEX_ONE_RATE" };
 
     let SmartPostDetail =
       this.getServiceCode() == "SMART_POST"
         ? {
-            Indicia:
-              this.mailClass.toLowerCase() == "smartpost-lightWeight"
-                ? "PRESORTED_STANDARD"
-                : "PARCEL_SELECT",
-            AncillaryEndorsement: "ADDRESS_CORRECTION",
-            HubId: this.account.HubId,
-          }
+          Indicia:
+            this.mailClass.toLowerCase() == "smartpost-lightWeight"
+              ? "PRESORTED_STANDARD"
+              : "PARCEL_SELECT",
+          AncillaryEndorsement: "ADDRESS_CORRECTION",
+          HubId: this.account.HubId,
+        }
         : undefined;
 
     // let SpecialRatingAppliedType =
@@ -276,19 +281,19 @@ class FEDEX extends CarrierClass {
     let MasterTrackingId =
       masterTrackingId && this.getServiceCode() != "SMART_POST"
         ? {
-            TrackingIdType: "FEDEX",
-            TrackingNumber: masterTrackingId,
-          }
+          TrackingIdType: "FEDEX",
+          TrackingNumber: masterTrackingId,
+        }
         : undefined;
 
     let TotalWeight =
       sequence == 1
         ? {
-            Units: "LB",
-            Value: packagesArray
-              .map((item) => item.Weight.Value)
-              .reduce((a, c) => a + c),
-          }
+          Units: "LB",
+          Value: packagesArray
+            .map((item) => item.Weight.Value)
+            .reduce((a, c) => a + c),
+        }
         : undefined;
 
     let Pcount =
@@ -480,9 +485,9 @@ class FEDEX extends CarrierClass {
       type == "rate"
         ? item.HighestSeverity != "ERROR" && item.HighestSeverity != "FAILURE"
         : item.every(
-            (e) =>
-              e.HighestSeverity != "ERROR" && e.HighestSeverity != "FAILURE"
-          );
+          (e) =>
+            e.HighestSeverity != "ERROR" && e.HighestSeverity != "FAILURE"
+        );
     switch (true) {
       case isScuss:
         try {
@@ -500,14 +505,14 @@ class FEDEX extends CarrierClass {
             calTotalAmount =
               type == "ship"
                 ? item
-                    .map(
-                      (item) =>
-                        item.CompletedShipmentDetail.CompletedPackageDetails[0]
-                          .PackageRating.PackageRateDetails[0].NetFedExCharge
-                          .Amount
-                    )
-                    .reduce((a, c) => a + c)
-                    .toFixed(2)
+                  .map(
+                    (item) =>
+                      item.CompletedShipmentDetail.CompletedPackageDetails[0]
+                        .PackageRating.PackageRateDetails[0].NetFedExCharge
+                        .Amount
+                  )
+                  .reduce((a, c) => a + c)
+                  .toFixed(2)
                 : undefined;
 
             // calTotalWeight =
@@ -551,10 +556,10 @@ class FEDEX extends CarrierClass {
             packagesRateDetail =
               type == "ship"
                 ? item.map(
-                    (item) =>
-                      item.CompletedShipmentDetail.CompletedPackageDetails[0]
-                        .PackageRating.PackageRateDetails[0]
-                  )
+                  (item) =>
+                    item.CompletedShipmentDetail.CompletedPackageDetails[0]
+                      .PackageRating.PackageRateDetails[0]
+                )
                 : rateInfo.RatedPackages;
 
             // console.log(packagesRateDetail);
@@ -592,26 +597,26 @@ class FEDEX extends CarrierClass {
             calTotalAmount =
               type == "ship"
                 ? item
-                    .map(
-                      (item) =>
-                        item.CompletedShipmentDetail.CompletedPackageDetails[0]
-                          .PackageRating.PackageRateDetails[0].NetFedExCharge
-                          .Amount
-                    )
-                    .reduce((a, c) => a + c)
-                    .toFixed(2)
+                  .map(
+                    (item) =>
+                      item.CompletedShipmentDetail.CompletedPackageDetails[0]
+                        .PackageRating.PackageRateDetails[0].NetFedExCharge
+                        .Amount
+                  )
+                  .reduce((a, c) => a + c)
+                  .toFixed(2)
                 : undefined;
             calTotalWeight =
               type == "ship"
                 ? item
-                    .map(
-                      (item) =>
-                        item.CompletedShipmentDetail.CompletedPackageDetails[0]
-                          .PackageRating.PackageRateDetails[0].BillingWeight
-                          .Value
-                    )
-                    .reduce((a, c) => a + c)
-                    .toFixed(2)
+                  .map(
+                    (item) =>
+                      item.CompletedShipmentDetail.CompletedPackageDetails[0]
+                        .PackageRating.PackageRateDetails[0].BillingWeight
+                        .Value
+                  )
+                  .reduce((a, c) => a + c)
+                  .toFixed(2)
                 : undefined;
 
             if (type == "rate") {
@@ -645,10 +650,10 @@ class FEDEX extends CarrierClass {
             packagesRateDetail =
               type == "ship"
                 ? item.map(
-                    (item) =>
-                      item.CompletedShipmentDetail.CompletedPackageDetails[0]
-                        .PackageRating.PackageRateDetails[0]
-                  )
+                  (item) =>
+                    item.CompletedShipmentDetail.CompletedPackageDetails[0]
+                      .PackageRating.PackageRateDetails[0]
+                )
                 : rateInfo.RatedPackages;
 
             // console.log(packagesRateDetail);
@@ -690,60 +695,60 @@ class FEDEX extends CarrierClass {
           tracking_array =
             type == "ship"
               ? selectArrayOrObject(item).map(
-                  (e) =>
-                    e.CompletedShipmentDetail.CompletedPackageDetails[0]
-                      .TrackingIds[0].TrackingNumber
-                )
+                (e) =>
+                  e.CompletedShipmentDetail.CompletedPackageDetails[0]
+                    .TrackingIds[0].TrackingNumber
+              )
               : [];
 
           extra =
             type == "ship"
               ? {
-                  parcel_list: await Promise.map(item, async (e, index) => {
-                    let url = await ImageUpload(
-                      e.CompletedShipmentDetail.CompletedPackageDetails[0].Label
-                        .Parts[0].Image,
+                parcel_list: await Promise.map(item, async (e, index) => {
+                  let url = await ImageUpload(
+                    e.CompletedShipmentDetail.CompletedPackageDetails[0].Label
+                      .Parts[0].Image,
+                    e.CompletedShipmentDetail.CompletedPackageDetails[0]
+                      .TrackingIds[0].TrackingNumber,
+                    "png",
+                    false,
+                    false
+                  );
+
+                  let obj = {
+                    label: [url],
+                    tracking_numbers: [
                       e.CompletedShipmentDetail.CompletedPackageDetails[0]
                         .TrackingIds[0].TrackingNumber,
-                      "png",
-                      false,
-                      false
-                    );
-
-                    let obj = {
-                      label: [url],
-                      tracking_numbers: [
-                        e.CompletedShipmentDetail.CompletedPackageDetails[0]
-                          .TrackingIds[0].TrackingNumber,
-                      ],
-                      weight:
-                        requestType == "oneRate"
-                          ? undefined
-                          : e.CompletedShipmentDetail.CompletedPackageDetails[0]
-                              .PackageRating.PackageRateDetails[0].BillingWeight
-                              .Value,
-                      billing_weight:
-                        requestType == "oneRate"
-                          ? undefined
-                          : e.CompletedShipmentDetail.CompletedPackageDetails[0]
-                              .PackageRating.PackageRateDetails[0].BillingWeight
-                              .Value,
-                      postage: {
-                        billing_amount: {
-                          baseCharges:
-                            e.CompletedShipmentDetail.CompletedPackageDetails[0]
-                              .PackageRating.PackageRateDetails[0].NetFreight
-                              .Amount,
-                          surCharges:
-                            e.CompletedShipmentDetail.CompletedPackageDetails[0]
-                              .PackageRating.PackageRateDetails[0].Surcharges,
-                        },
+                    ],
+                    weight:
+                      requestType == "oneRate"
+                        ? undefined
+                        : e.CompletedShipmentDetail.CompletedPackageDetails[0]
+                          .PackageRating.PackageRateDetails[0].BillingWeight
+                          .Value,
+                    billing_weight:
+                      requestType == "oneRate"
+                        ? undefined
+                        : e.CompletedShipmentDetail.CompletedPackageDetails[0]
+                          .PackageRating.PackageRateDetails[0].BillingWeight
+                          .Value,
+                    postage: {
+                      billing_amount: {
+                        baseCharges:
+                          e.CompletedShipmentDetail.CompletedPackageDetails[0]
+                            .PackageRating.PackageRateDetails[0].NetFreight
+                            .Amount,
+                        surCharges:
+                          e.CompletedShipmentDetail.CompletedPackageDetails[0]
+                            .PackageRating.PackageRateDetails[0].Surcharges,
                       },
-                    };
+                    },
+                  };
 
-                    return obj;
-                  }),
-                }
+                  return obj;
+                }),
+              }
               : undefined;
 
           response = {
@@ -1065,7 +1070,7 @@ class FEDEX extends CarrierClass {
     }
   }
 
-  // test enviroment
+  //test enviroment
   // async ship(shipment, requestType = "shipment", url = "ShipService_v23.wsdl") {
   //   try {
   //     requestType = ["ground home delivery", "smartpost"].includes(
@@ -1295,11 +1300,11 @@ class FEDEX extends CarrierClass {
   //   }
   // }
 
-  void = () => {};
+  void = () => { };
 
-  track = () => {};
+  track = () => { };
 
-  verify = () => {};
+  verify = () => { };
 }
 
 module.exports = { FEDEX };

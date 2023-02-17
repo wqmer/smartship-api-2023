@@ -18,7 +18,9 @@ process.on("message", async function (msg) {
     weight: msg.BillingWeight,
     postage: {
       billing_amount: {
-        baseCharges: msg.BaseServiceCharge.MonetaryValue,
+        // baseCharges: msg.BaseServiceCharge.MonetaryValue,
+        baseCharges: msg.BaseServiceCharge ? msg.BaseServiceCharge.MonetaryValue : msg.ServiceOptionsCharges.MonetaryValue,
+        // baseCharges:0,
         surCharges: msg.ItemizedCharges,
       },
     },
