@@ -376,27 +376,44 @@ class UPS extends CarrierClass {
           }
           : {
             PaymentInformation: {
-              // 账号方预付
-              // ShipmentCharge: {
-              //   Type: "01",
-              //   BillShipper: {
-              //     AccountNumber: this.account.AccountNo,
-              //   },
-              // },
-              // 3rd party 支付
+              // -------------账号方预付---------------
               ShipmentCharge: {
                 Type: "01",
-                BillThirdParty: {
-                  AccountNumber: '1Y750E',
-                  Address: {
-                    // AddressLine: '333 BOREN AVE N',
-                    // City: 'SEATTLE',
-                    // StateProvinceCode: 'WA',
-                    PostalCode: '98109-3536',
-                    CountryCode: "US",
-                  },
-                }
+                BillShipper: {
+                  AccountNumber: this.account.AccountNo,
+                },
               },
+              // -----------3rd party 支付---------------
+              // ShipmentCharge: {
+              //   Type: "01",
+              //   BillThirdParty: {
+              //     AccountNumber: '1Y750E',
+              //     Address: {
+              //       // AddressLine: '333 BOREN AVE N',
+              //       // City: 'SEATTLE',
+              //       // StateProvinceCode: 'WA',
+              //       PostalCode: '98109-3536',
+              //       CountryCode: "US",
+              //     },
+              //   }
+              // },
+              //-----------3rd party 支付---------------
+              // ShipmentCharge: {
+              //   Type: "01",
+              //   BillThirdParty: {
+              //     // AccountNumber: '8FX581',
+              //     AccountNumber: '1Y750E',
+              //     // AccountNumber: '14W560',
+              //     Address: {
+              //       // AddressLine: '333 BOREN AVE N',
+              //       // City: 'SEATTLE',
+              //       // StateProvinceCode: 'WA',
+              //       PostalCode: '98109-3536',
+              //       CountryCode: "US",
+              //     },
+              //   }
+              // },
+            //-----------------------
             },
           };
       //------ UPS request format ---------------
@@ -815,13 +832,13 @@ class UPS extends CarrierClass {
 
       // return response;
 
-      console.log(
-        util.inspect(response, {
-          showHidden: false,
-          depth: null,
-          colors: true,
-        })
-      );
+      // console.log(
+      //   util.inspect(response, {
+      //     showHidden: false,
+      //     depth: null,
+      //     colors: true,
+      //   })
+      // );
       let ResponseWithoutHeader = await this.handleResonse(
         response,
         "ship",
@@ -837,7 +854,7 @@ class UPS extends CarrierClass {
 
       return ResponseWithoutHeader;
     } catch (error) {
-      //   console.log(error);
+        console.log(error);
       // return;
       console.log("error happened from ship method");
       return this.errorMapResopnse(error);
@@ -938,6 +955,12 @@ class UPS extends CarrierClass {
       // console.log(error);
       return;
     }
+  }
+
+
+  // new Oauth for restful Api
+  async generateToken(){
+
   }
 
   // track = () => {

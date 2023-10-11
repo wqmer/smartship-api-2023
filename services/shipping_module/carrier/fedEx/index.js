@@ -205,9 +205,12 @@ class FEDEX extends CarrierClass {
             Height: Math.ceil(parseFloat(height)),
             Units: "IN",
           },
-          // //配置签收
+          //配置签收
           // SpecialServicesRequested: { SpecialServiceTypes: 'SIGNATURE_OPTION', SignatureOptionDetail: { OptionType: 'DIRECT' } },
-
+          // DIRECT
+          // INDIRECT
+          // ADULT
+          // NO_SIGNATURE_REQUIRED
           CustomerReferences: {
             CustomerReferenceType: "P_O_NUMBER",
             Value: item.reference_1, //订单号
@@ -221,8 +224,6 @@ class FEDEX extends CarrierClass {
 
           CustomerReferences,
         };
-
-        //--- todo
         return shipment_fedex;
       }
     );
